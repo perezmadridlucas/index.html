@@ -205,7 +205,7 @@ export const TripDocumentPreview = forwardRef<HTMLDivElement, TripDocumentPrevie
     <div
       ref={ref}
       id="trip-pdf-document"
-      className="bg-white text-stone-900 font-sans w-full max-w-[820px] mx-auto p-4 sm:p-5 shadow-2xl rounded-2xl border border-stone-200 print:border-0 print:shadow-none print:p-0 print:m-0 print:max-w-none print:w-full print:rounded-none"
+      className="bg-white text-stone-900 font-sans w-full max-w-[860px] mx-auto px-2.5 sm:px-3 py-2.5 shadow-2xl rounded-2xl border border-stone-200 print:border-0 print:shadow-none print:p-0 print:m-0 print:max-w-none print:w-full print:rounded-none"
       style={{ fontFamily: '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}
     >
       {/* 1. Header: Compact Executive Match Banner */}
@@ -656,7 +656,7 @@ export const TripDocumentPreview = forwardRef<HTMLDivElement, TripDocumentPrevie
             {resolvedStaff.length > 0 ? (
               resolvedStaff.map((st) => (
                 <div key={st.id} className="flex items-center justify-between gap-1.5 px-2 py-0.5 rounded bg-stone-50 border border-stone-200/60">
-                  <span className="text-[9px] font-semibold text-stone-600 truncate max-w-[130px]">
+                  <span className="text-[9px] font-semibold text-stone-600 truncate max-w-[190px]">
                     {st.roleTitle}
                   </span>
                   <span className="font-extrabold text-slate-900 text-[9.5px] uppercase truncate tracking-tight text-right">

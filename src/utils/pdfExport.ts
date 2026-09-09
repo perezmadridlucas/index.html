@@ -29,10 +29,31 @@ export async function exportTripPlanToPDF({
     targetElement.style.display = 'block';
   }
 
+  // Preserve original layout styles
+  const prevWidth = targetElement.style.width;
+  const prevMaxWidth = targetElement.style.maxWidth;
+  const prevMinWidth = targetElement.style.minWidth;
+  const prevPadding = targetElement.style.padding;
+  const prevMargin = targetElement.style.margin;
+  const prevBorderRadius = targetElement.style.borderRadius;
+  const prevBorder = targetElement.style.border;
+  const prevBoxShadow = targetElement.style.boxShadow;
+
+  // Set optimal A4 width (860px) and narrow internal padding (8px 10px) so text distributes widely across the sheet
+  const exportWidthPx = 860;
+  targetElement.style.width = `${exportWidthPx}px`;
+  targetElement.style.maxWidth = `${exportWidthPx}px`;
+  targetElement.style.minWidth = `${exportWidthPx}px`;
+  targetElement.style.padding = '8px 10px';
+  targetElement.style.margin = '0';
+  targetElement.style.borderRadius = '0px';
+  targetElement.style.border = 'none';
+  targetElement.style.boxShadow = 'none';
+
   try {
     // Generate image using html-to-image (skipFonts prevents CORS errors with external webfonts)
     const imgData = await toPng(targetElement, {
-      quality: 0.95,
+      quality: 0.98,
       pixelRatio: 2,
       backgroundColor: '#ffffff',
       cacheBust: true,
@@ -46,7 +67,7 @@ export async function exportTripPlanToPDF({
       },
     });
 
-    onProgress?.('Estructurando formato A4...');
+    onProgress?.('Estructurando formato A4 con márgenes laterales estrechos (≤ 0.5 cm)...');
 
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -60,17 +81,35 @@ export async function exportTripPlanToPDF({
 
     const imgProps = pdf.getImageProperties(imgData);
 
-    // Compress strictly into a single A4 page without creating a second page
-    const widthRatio = pdfWidth / imgProps.width;
-    const heightRatio = pdfPageHeight / imgProps.height;
-    const scale = Math.min(widthRatio, heightRatio);
+    // Margins: strictly maximum 0.5 cm (<= 5mm) on the sides as requested
+    const lateralMargin = 4.5; // 4.5 mm = 0.45 cm (<= 0.5 cm)
+    const renderWidth = pdfWidth - (lateralMargin * 2); // 201 mm
+    const posX = lateralMargin; // 4.5 mm
 
-    const renderWidth = imgProps.width * scale;
-    const renderHeight = imgProps.height * scale;
-    const posX = (pdfWidth - renderWidth) / 2;
-    const posY = Math.max(0, (pdfPageHeight - renderHeight) / 2);
+    // Proportional height for the 201 mm width
+    const aspectRatio = imgProps.height / imgProps.width;
+    let renderHeight = renderWidth * aspectRatio;
 
-    pdf.addImage(imgData, 'PNG', posX, posY, renderWidth, renderHeight);
+    // Available height on A4 with minimum 4.5 mm vertical margin
+    const minVerticalMargin = 4.5; // mm
+    const maxAvailableHeight = pdfPageHeight - (minVerticalMargin * 2); // 288 mm
+
+    let posY = minVerticalMargin;
+    let finalWidth = renderWidth;
+    let finalPosX = posX;
+
+    if (renderHeight <= maxAvailableHeight) {
+      // Fits comfortably within A4 page height - center vertically
+      posY = Math.max(minVerticalMargin, (pdfPageHeight - renderHeight) / 2);
+    } else {
+      // If content is taller, fit exactly within maxAvailableHeight to guarantee single-page fit
+      const scaleDown = maxAvailableHeight / renderHeight;
+      renderHeight = maxAvailableHeight;
+      finalWidth = renderWidth * scaleDown;
+      finalPosX = (pdfWidth - finalWidth) / 2;
+    }
+
+    pdf.addImage(imgData, 'PNG', finalPosX, posY, finalWidth, renderHeight);
 
     onProgress?.('Descargando archivo PDF...');
 
@@ -102,6 +141,16 @@ export async function exportTripPlanToPDF({
     console.error('Canvas/PDF export error:', err);
     throw err;
   } finally {
+    // Restore original element styling
+    targetElement.style.width = prevWidth;
+    targetElement.style.maxWidth = prevMaxWidth;
+    targetElement.style.minWidth = prevMinWidth;
+    targetElement.style.padding = prevPadding;
+    targetElement.style.margin = prevMargin;
+    targetElement.style.borderRadius = prevBorderRadius;
+    targetElement.style.border = prevBorder;
+    targetElement.style.boxShadow = prevBoxShadow;
+
     if (wasDisplayNone) {
       targetElement.style.display = 'none';
     }
@@ -117,6 +166,25 @@ export async function exportTripPlanToImage(
 ): Promise<boolean> {
   const targetElement = element || document.getElementById('trip-pdf-document');
   if (!targetElement) return false;
+
+  const prevWidth = targetElement.style.width;
+  const prevMaxWidth = targetElement.style.maxWidth;
+  const prevMinWidth = targetElement.style.minWidth;
+  const prevPadding = targetElement.style.padding;
+  const prevMargin = targetElement.style.margin;
+  const prevBorderRadius = targetElement.style.borderRadius;
+  const prevBorder = targetElement.style.border;
+  const prevBoxShadow = targetElement.style.boxShadow;
+
+  const exportWidthPx = 860;
+  targetElement.style.width = `${exportWidthPx}px`;
+  targetElement.style.maxWidth = `${exportWidthPx}px`;
+  targetElement.style.minWidth = `${exportWidthPx}px`;
+  targetElement.style.padding = '8px 10px';
+  targetElement.style.margin = '0';
+  targetElement.style.borderRadius = '0px';
+  targetElement.style.border = 'none';
+  targetElement.style.boxShadow = 'none';
 
   try {
     const imgData = await toPng(targetElement, {
@@ -139,6 +207,15 @@ export async function exportTripPlanToImage(
   } catch (e) {
     console.error('Image export error:', e);
     return false;
+  } finally {
+    targetElement.style.width = prevWidth;
+    targetElement.style.maxWidth = prevMaxWidth;
+    targetElement.style.minWidth = prevMinWidth;
+    targetElement.style.padding = prevPadding;
+    targetElement.style.margin = prevMargin;
+    targetElement.style.borderRadius = prevBorderRadius;
+    targetElement.style.border = prevBorder;
+    targetElement.style.boxShadow = prevBoxShadow;
   }
 }
 

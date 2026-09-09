@@ -1884,10 +1884,10 @@ ${playersList}
         <div 
           className={`${
             activeView === 'editor' 
-              ? 'fixed -left-[9999px] -top-[9999px] w-[820px] pointer-events-none opacity-0' 
+              ? 'fixed -left-[9999px] -top-[9999px] w-[860px] pointer-events-none opacity-0' 
               : activeView === 'split' 
                 ? 'xl:col-span-6 sticky top-24 space-y-3' 
-                : 'max-w-4xl mx-auto w-full space-y-3'
+                : 'max-w-5xl mx-auto w-full space-y-3'
           }`}
         >
           <div className="flex items-center justify-between px-2 text-xs text-stone-400">
