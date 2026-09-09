@@ -1,0 +1,6 @@
+{
+  "name": "UCAM Murcia CB - Horarios y WhatsApp",
+  "description": "Herramienta de gestión de horarios y envío automatizado de planificaciones por WhatsApp para UCAM Murcia CB.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
