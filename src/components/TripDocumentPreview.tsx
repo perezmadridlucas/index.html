@@ -712,24 +712,24 @@ export const TripDocumentPreview = forwardRef<HTMLDivElement, TripDocumentPrevie
           <div className="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-stone-100 text-[7.5px] font-bold text-stone-600">
             <span className="text-stone-400 uppercase font-black tracking-wider text-[7px]">Lic.:</span>
             <div className="flex items-center gap-1.5">
-              <span className="flex items-center gap-0.5" title="Foreign player: número amarillo con fondo negro">
-                <span className="w-2.5 h-2.5 rounded-xs inline-block" style={{ backgroundColor: '#0f172a' }}></span>
-                <span className="text-stone-700">Foreign</span>
-              </span>
-              <span className="flex items-center gap-0.5" title="European - Cotonou: número amarillo con fondo azul">
-                <span className="w-2.5 h-2.5 rounded-xs inline-block" style={{ backgroundColor: '#1d4ed8' }}></span>
-                <span className="text-stone-700">Cotonou</span>
-              </span>
-              <span className="flex items-center gap-0.5" title="Home grown (ACB): número amarillo con fondo rojo">
+              <span className="flex items-center gap-0.5" title="JFL: Jugador de Formación Local (fondo rojo)">
                 <span className="w-2.5 h-2.5 rounded-xs inline-block" style={{ backgroundColor: '#dc2626' }}></span>
-                <span className="text-stone-700">JFL (ACB)</span>
+                <span className="text-stone-700">JFL</span>
               </span>
-              <span className="flex items-center gap-0.5" title="Home grown (BCL): número amarillo con fondo rojo y azul diagonal">
+              <span className="flex items-center gap-0.5" title="EUR: Comunitario / Cotonú (fondo azul)">
+                <span className="w-2.5 h-2.5 rounded-xs inline-block" style={{ backgroundColor: '#2563eb' }}></span>
+                <span className="text-stone-700">EUR</span>
+              </span>
+              <span className="flex items-center gap-0.5" title="EXT: Extracomunitario (fondo azul oscuro)">
+                <span className="w-2.5 h-2.5 rounded-xs inline-block" style={{ backgroundColor: '#172554' }}></span>
+                <span className="text-stone-700">EXT</span>
+              </span>
+              <span className="flex items-center gap-0.5" title="JFL BCL: Marcis Steinbergs (fondo mitad rojo, mitad azul diagonal)">
                 <span 
                   className="w-2.5 h-2.5 rounded-xs inline-block border border-stone-300"
-                  style={{ backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #1d4ed8 50%)' }}
+                  style={{ backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #2563eb 50%)' }}
                 ></span>
-                <span className="text-stone-700">JFL (BCL)</span>
+                <span className="text-stone-700">JFL BCL</span>
               </span>
             </div>
           </div>

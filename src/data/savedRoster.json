@@ -1,183 +1,183 @@
 [
   {
-    "id": "p-juani-marcos",
-    "name": "Juani Marcos",
-    "role": "player",
-    "position": "Point Guard",
-    "jerseyNumber": 6,
-    "phone": "+34633390477",
-    "isActive": true,
-    "license": "Home grown (ACB)"
-  },
-  {
     "id": "p-souley-boum",
     "name": "Souley Boum",
     "role": "player",
-    "position": "Point Guard",
+    "position": "Base",
     "jerseyNumber": 0,
     "phone": "+1(510)853-1287",
     "isActive": true,
-    "license": "Foreign player"
+    "license": "EUR"
   },
   {
     "id": "p-mike-forrest",
-    "name": "Mike Forrest",
+    "name": "Michael Forrest",
     "role": "player",
-    "position": "Point Guard",
+    "position": "Base",
     "jerseyNumber": 1,
     "phone": "+1(954)842-6899",
     "isActive": true,
-    "license": "Foreign player"
-  },
-  {
-    "id": "p-dani-gonzalez",
-    "name": "Dani González",
-    "role": "player",
-    "position": "Point Guard",
-    "jerseyNumber": 7,
-    "phone": "+34646036744",
-    "isActive": true,
-    "license": "Home grown (ACB)"
-  },
-  {
-    "id": "p-dylan-ennis",
-    "name": "Dylan Ennis",
-    "role": "player",
-    "position": "Shooting Guard",
-    "jerseyNumber": 31,
-    "phone": "+1(646)204-5109",
-    "isActive": true,
-    "license": "European - Cotonou"
-  },
-  {
-    "id": "p-jonah-radebaugh",
-    "name": "Jonah Radebaugh",
-    "role": "player",
-    "position": "Shooting Guard",
-    "jerseyNumber": 12,
-    "phone": "+1(720)284-9501",
-    "isActive": true,
-    "license": "European - Cotonou"
-  },
-  {
-    "id": "p-howard-sant-ross",
-    "name": "Howard Sant-Ross",
-    "role": "player",
-    "position": "Small Forward",
-    "jerseyNumber": 8,
-    "phone": "+34654425062",
-    "isActive": true,
-    "license": "European - Cotonou"
+    "license": "EUR"
   },
   {
     "id": "p-sander-raieste",
     "name": "Sander Raieste",
     "role": "player",
-    "position": "Small Forward",
+    "position": "Alero",
     "jerseyNumber": 2,
     "phone": "+37256454442",
     "isActive": true,
-    "license": "Home grown (ACB)"
-  },
-  {
-    "id": "p-will-falk",
-    "name": "Will Falk",
-    "role": "player",
-    "position": "Small Forward",
-    "jerseyNumber": 13,
-    "phone": "+46708881031",
-    "isActive": true,
-    "license": "Home grown (BCL)"
-  },
-  {
-    "id": "p-ruben-lopez",
-    "name": "Rubén López de la Torre",
-    "role": "player",
-    "position": "Small Forward",
-    "jerseyNumber": 16,
-    "phone": "+34606836355",
-    "isActive": true,
-    "license": "Home grown (ACB)"
+    "license": "JFL"
   },
   {
     "id": "p-kaiser-gates",
     "name": "Kaiser Gates",
     "role": "player",
-    "position": "Power Forward",
+    "position": "Ala-pívot",
     "jerseyNumber": 4,
     "phone": "+1(678)446-7609",
     "isActive": true,
-    "license": "Foreign player"
+    "license": "EXT"
   },
   {
-    "id": "p-toni-nakic",
-    "name": "Toni Nakic",
+    "id": "p-juani-marcos",
+    "name": "Juani Marcos",
     "role": "player",
-    "position": "Power Forward",
-    "jerseyNumber": 99,
-    "phone": "+385915847359",
+    "position": "Base",
+    "jerseyNumber": 6,
+    "phone": "+34633390477",
     "isActive": true,
-    "license": "European - Cotonou"
+    "license": "EUR"
   },
   {
-    "id": "p-marcis-steinbergs",
-    "name": "Marcis Steinbergs",
+    "id": "p-howard-sant-ross",
+    "name": "Howard Sant-Roos",
     "role": "player",
-    "position": "Power Forward",
-    "jerseyNumber": 28,
-    "phone": "+37129111534",
+    "position": "Alero",
+    "jerseyNumber": 8,
+    "phone": "+34654425062",
     "isActive": true,
-    "license": "Home grown (ACB)"
+    "license": "EUR"
   },
   {
-    "id": "p-jean-marc-pansa",
-    "name": "Jean - Marc Pansa",
+    "id": "p-jonah-radebaugh",
+    "name": "Jonah Radebaugh",
     "role": "player",
-    "position": "Center",
-    "jerseyNumber": 20,
-    "phone": "+33669740259",
+    "position": "Base",
+    "jerseyNumber": 12,
+    "phone": "+1(720)284-9501",
     "isActive": true,
-    "license": "European - Cotonou"
+    "license": "EUR"
+  },
+  {
+    "id": "p-will-falk",
+    "name": "Wilhelm Falk",
+    "role": "player",
+    "position": "Escolta",
+    "jerseyNumber": 13,
+    "phone": "+46708881031",
+    "isActive": true,
+    "license": "JFL"
   },
   {
     "id": "p-emanuel-cate",
     "name": "Emanuel Cate",
     "role": "player",
-    "position": "Center",
+    "position": "Pívot",
     "jerseyNumber": 15,
     "phone": "+40728784151",
     "isActive": true,
-    "license": "Home grown (ACB)"
+    "license": "JFL"
+  },
+  {
+    "id": "p-ruben-lopez",
+    "name": "Rubén López de la Torre",
+    "role": "player",
+    "position": "Ala-pívot",
+    "jerseyNumber": 16,
+    "phone": "+34606836355",
+    "isActive": true,
+    "license": "JFL"
+  },
+  {
+    "id": "p-jean-marc-pansa",
+    "name": "Jean-Marc Pansa",
+    "role": "player",
+    "position": "Pívot",
+    "jerseyNumber": 20,
+    "phone": "+33669740259",
+    "isActive": true,
+    "license": "EUR"
   },
   {
     "id": "p-moussa-diagne",
     "name": "Moussa Diagne",
     "role": "player",
-    "position": "Center",
+    "position": "Pívot",
     "jerseyNumber": 21,
     "phone": "+34684614726",
     "isActive": true,
-    "license": "Home grown (ACB)"
+    "license": "JFL"
+  },
+  {
+    "id": "p-marcis-steinbergs",
+    "name": "Marcis Steinbergs",
+    "role": "player",
+    "position": "Ala-pívot",
+    "jerseyNumber": 28,
+    "phone": "+37129111534",
+    "isActive": true,
+    "license": "JFL BCL"
+  },
+  {
+    "id": "p-dylan-ennis",
+    "name": "Dylan Ennis",
+    "role": "player",
+    "position": "Escolta",
+    "jerseyNumber": 31,
+    "phone": "+1(646)204-5109",
+    "isActive": true,
+    "license": "EUR"
+  },
+  {
+    "id": "p-toni-nakic",
+    "name": "Toni Nakic",
+    "role": "player",
+    "position": "Alero",
+    "jerseyNumber": 99,
+    "phone": "+385915847359",
+    "isActive": true,
+    "license": "EUR"
   },
   {
     "id": "p-joao-neves",
     "name": "Joao Neves",
     "role": "player",
-    "position": "Small Forward",
+    "position": "Alero",
     "jerseyNumber": 14,
     "phone": "+559199341-1212",
     "isActive": true,
-    "license": "Home grown (BCL)"
+    "license": "EXT"
   },
   {
     "id": "p-pablo-sevilla",
     "name": "Pablo Sevilla",
     "role": "player",
-    "position": "Small Forward",
+    "position": "Alero",
     "jerseyNumber": 27,
     "phone": "+34610200300",
     "isActive": true,
-    "license": "Home grown (ACB)"
+    "license": "JFL"
+  },
+  {
+    "id": "p-dani-gonzalez",
+    "name": "Dani González",
+    "role": "player",
+    "position": "Base",
+    "jerseyNumber": 7,
+    "phone": "+34646036744",
+    "isActive": true,
+    "license": "JFL"
   },
   {
     "id": "s-sito-alonso",

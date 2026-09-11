@@ -10,6 +10,7 @@ import { DailyPlan, DispatchLog, TeamMember } from './types';
 import { DEFAULT_ROSTER } from './data/defaultRoster';
 import { PRESET_TEMPLATES } from './data/activityDefinitions';
 import { safeStorage } from './utils/safeStorage';
+import { normalizeLicense } from './utils/licenseHelper';
 
 // Helper to get tomorrow's date formatted as YYYY-MM-DD
 function getTomorrowDateString(): string {
@@ -24,6 +25,7 @@ export default function App() {
   // Load roster from safeStorage or default with multi-key permanent fallback
   const [members, setMembers] = useState<TeamMember[]>(() => {
     const candidateKeys = [
+      'ucam_roster_v7',
       'ucam_roster_v6',
       'ucam_roster_v5',
       'ucam_roster_permanent',
@@ -53,23 +55,25 @@ export default function App() {
               // Ensure medical is migrated to staff if old format
               const normalizedRole = m.role === ('medical' as any) ? ('staff' as const) : m.role;
               const def = defaultMap.get(m.id);
+              
+              // Synchronize official ACB data (name, dorsal, license) while preserving exact phone numbers
+              const officialName = def ? def.name : m.name;
+              const officialJersey = def?.jerseyNumber !== undefined ? def.jerseyNumber : m.jerseyNumber;
+              const officialPosition = def?.position || m.position;
               const license = m.role === 'player' 
-                ? (m.license || def?.license || 'Foreign player')
+                ? (def?.license ? def.license : (m.license ? normalizeLicense(m.license) : 'EXT'))
                 : undefined;
               
-              // If the saved phone is an old placeholder, upgrade to the real phone in DEFAULT_ROSTER
+              // If the saved phone is an old placeholder, upgrade to the real phone in DEFAULT_ROSTER. Otherwise, preserve user phone strictly!
               const phone = isPlaceholderPhone(m.phone) && def?.phone ? def.phone : m.phone;
-              // If the saved position is empty or old placeholder, upgrade
-              const position = m.position || def?.position;
-              // If jerseyNumber is missing, take from def
-              const jerseyNumber = m.jerseyNumber !== undefined ? m.jerseyNumber : def?.jerseyNumber;
 
               return { 
                 ...m, 
+                name: officialName,
                 role: normalizedRole,
                 phone,
-                position,
-                jerseyNumber,
+                position: officialPosition,
+                jerseyNumber: officialJersey,
                 ...(license ? { license } : {})
               };
             });
@@ -103,6 +107,7 @@ export default function App() {
   useEffect(() => {
     if (!members || members.length === 0) return;
     const json = JSON.stringify(members);
+    safeStorage.setItem('ucam_roster_v7', json);
     safeStorage.setItem('ucam_roster_v6', json);
     safeStorage.setItem('ucam_roster_v5', json);
     safeStorage.setItem('ucam_roster_permanent', json);

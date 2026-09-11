@@ -41,6 +41,10 @@ export interface ScheduleItem {
 export type MemberRole = 'player' | 'staff' | 'medical';
 
 export type PlayerLicense = 
+  | 'JFL'
+  | 'EUR'
+  | 'EXT'
+  | 'JFL BCL'
   | 'Foreign player'
   | 'Home grown (ACB)'
   | 'Home grown (BCL)'

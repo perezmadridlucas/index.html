@@ -3,28 +3,28 @@ import { PlayerLicense } from '../types';
 
 export const LICENSE_OPTIONS: { id: PlayerLicense; label: string; shortLabel: string; description: string }[] = [
   {
-    id: 'Foreign player',
-    label: 'Foreign player',
-    shortLabel: 'Foreign',
-    description: 'Extracomunitario (USA / otros)',
+    id: 'JFL',
+    label: 'JFL',
+    shortLabel: 'JFL',
+    description: 'Jugador Formación Local (España / ACB)',
   },
   {
-    id: 'European - Cotonou',
-    label: 'European - Cotonou',
-    shortLabel: 'Cotonou',
-    description: 'Pasaporte comunitario europeo o país Cotonú',
+    id: 'EUR',
+    label: 'EUR',
+    shortLabel: 'EUR',
+    description: 'Comunitario / Cotonú (EUR y COT)',
   },
   {
-    id: 'Home grown (ACB)',
-    label: 'Home grown (ACB)',
-    shortLabel: 'JFL ACB',
-    description: 'Jugador de formación local (ACB)',
+    id: 'EXT',
+    label: 'EXT',
+    shortLabel: 'EXT',
+    description: 'Extracomunitario',
   },
   {
-    id: 'Home grown (BCL)',
-    label: 'Home grown (BCL)',
+    id: 'JFL BCL',
+    label: 'JFL BCL',
     shortLabel: 'JFL BCL',
-    description: 'Jugador de formación local (Basketball Champions League)',
+    description: 'Licencia especial JFL BCL (Marcis Steinbergs)',
   },
 ];
 
@@ -40,84 +40,100 @@ export interface LicenseVisual {
   pdfBadgeStyle: React.CSSProperties;
 }
 
+export function normalizeLicense(license?: string): PlayerLicense {
+  if (!license) return 'EXT';
+  const clean = license.trim().toUpperCase();
+  if (clean === 'JFL' || clean.includes('HOME GROWN (ACB)') || clean.includes('JFL ACB')) return 'JFL';
+  if (clean === 'EUR' || clean.includes('EUROPEAN') || clean.includes('COTONOU') || clean === 'COT') return 'EUR';
+  if (clean === 'JFL BCL' || clean.includes('BCL')) return 'JFL BCL';
+  if (clean === 'EXT' || clean.includes('FOREIGN')) return 'EXT';
+  return 'EXT';
+}
+
 export function getLicenseVisual(license?: PlayerLicense | string): LicenseVisual {
-  switch (license) {
-    case 'European - Cotonou':
-      return {
-        id: 'European - Cotonou',
-        label: 'European - Cotonou',
-        shortLabel: 'Cotonou',
-        badgeBgClass: 'bg-blue-700',
-        badgeTextClass: 'text-amber-300',
-        badgeBorderClass: 'border-blue-500',
-        cardPillActive: 'bg-blue-600 text-amber-300 border-blue-400 font-extrabold shadow-sm',
-        style: {
-          backgroundColor: '#1d4ed8',
-          color: '#fde047',
-        },
-        pdfBadgeStyle: {
-          backgroundColor: '#1d4ed8', // Royal Blue
-          color: '#fde047', // Yellow
-        },
-      };
+  const norm = normalizeLicense(license);
 
-    case 'Home grown (ACB)':
+  switch (norm) {
+    case 'JFL':
       return {
-        id: 'Home grown (ACB)',
-        label: 'Home grown (ACB)',
-        shortLabel: 'JFL ACB',
-        badgeBgClass: 'bg-red-700',
-        badgeTextClass: 'text-amber-300',
+        id: 'JFL',
+        label: 'JFL',
+        shortLabel: 'JFL',
+        badgeBgClass: 'bg-red-600',
+        badgeTextClass: 'text-white',
         badgeBorderClass: 'border-red-500',
-        cardPillActive: 'bg-red-600 text-amber-300 border-red-400 font-extrabold shadow-sm',
+        cardPillActive: 'bg-red-600 text-white border-red-400 font-extrabold shadow-sm',
         style: {
-          backgroundColor: '#dc2626',
-          color: '#fde047',
+          backgroundColor: '#dc2626', // Rojo
+          color: '#ffffff',
         },
         pdfBadgeStyle: {
-          backgroundColor: '#dc2626', // Red
-          color: '#fde047', // Yellow
+          backgroundColor: '#dc2626', // Rojo
+          color: '#ffffff',
+          fontWeight: '900',
         },
       };
 
-    case 'Home grown (BCL)':
+    case 'EUR':
       return {
-        id: 'Home grown (BCL)',
-        label: 'Home grown (BCL)',
+        id: 'EUR',
+        label: 'EUR',
+        shortLabel: 'EUR',
+        badgeBgClass: 'bg-blue-600',
+        badgeTextClass: 'text-white',
+        badgeBorderClass: 'border-blue-500',
+        cardPillActive: 'bg-blue-600 text-white border-blue-400 font-extrabold shadow-sm',
+        style: {
+          backgroundColor: '#2563eb', // Azul
+          color: '#ffffff',
+        },
+        pdfBadgeStyle: {
+          backgroundColor: '#2563eb', // Azul
+          color: '#ffffff',
+          fontWeight: '900',
+        },
+      };
+
+    case 'JFL BCL':
+      return {
+        id: 'JFL BCL',
+        label: 'JFL BCL',
         shortLabel: 'JFL BCL',
         badgeBgClass: '',
-        badgeTextClass: 'text-amber-300',
+        badgeTextClass: 'text-white',
         badgeBorderClass: 'border-amber-400/80',
-        cardPillActive: 'text-amber-300 border-amber-400 font-extrabold shadow-sm',
+        cardPillActive: 'text-white border-amber-400 font-extrabold shadow-sm',
         style: {
-          backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #1d4ed8 50%)',
-          color: '#fde047',
+          backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #2563eb 50%)', // Mitad rojo, mitad azul diagonal
+          color: '#ffffff',
           textShadow: '0 1px 2px rgba(0,0,0,0.85)',
         },
         pdfBadgeStyle: {
-          backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #1d4ed8 50%)', // Diagonal split red/blue
-          color: '#fde047', // Yellow
+          backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #2563eb 50%)', // Mitad rojo, mitad azul diagonal
+          color: '#ffffff',
+          fontWeight: '900',
           textShadow: '0 1px 2px rgba(0,0,0,0.9)',
         },
       };
 
-    case 'Foreign player':
+    case 'EXT':
     default:
       return {
-        id: 'Foreign player',
-        label: 'Foreign player',
-        shortLabel: 'Foreign',
-        badgeBgClass: 'bg-slate-900',
-        badgeTextClass: 'text-amber-300',
-        badgeBorderClass: 'border-stone-700',
-        cardPillActive: 'bg-slate-900 text-amber-300 border-amber-500/50 font-extrabold shadow-sm',
+        id: 'EXT',
+        label: 'EXT',
+        shortLabel: 'EXT',
+        badgeBgClass: 'bg-blue-950',
+        badgeTextClass: 'text-white',
+        badgeBorderClass: 'border-blue-900',
+        cardPillActive: 'bg-blue-950 text-white border-blue-700 font-extrabold shadow-sm',
         style: {
-          backgroundColor: '#0f172a',
-          color: '#fde047',
+          backgroundColor: '#172554', // Azul oscuro
+          color: '#ffffff',
         },
         pdfBadgeStyle: {
-          backgroundColor: '#0f172a', // Black / Dark Slate
-          color: '#fde047', // Yellow
+          backgroundColor: '#172554', // Azul oscuro
+          color: '#ffffff',
+          fontWeight: '900',
         },
       };
   }

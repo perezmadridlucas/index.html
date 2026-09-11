@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { TeamMember, MemberRole, PlayerLicense } from '../types';
 import { buildWhatsAppUrl } from '../utils/whatsappGenerator';
-import { LICENSE_OPTIONS, getLicenseVisual } from '../utils/licenseHelper';
+import { LICENSE_OPTIONS, getLicenseVisual, normalizeLicense } from '../utils/licenseHelper';
 
 interface RosterManagerProps {
   members: TeamMember[];
@@ -29,7 +29,7 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
   const [role, setRole] = useState<MemberRole>('player');
   const [position, setPosition] = useState('Escolta');
   const [jerseyNumber, setJerseyNumber] = useState<string>('');
-  const [license, setLicense] = useState<PlayerLicense>('Foreign player');
+  const [license, setLicense] = useState<PlayerLicense>('EXT');
   const [phone, setPhone] = useState('+34');
   const [notes, setNotes] = useState('');
 
@@ -39,7 +39,7 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
     setRole('player');
     setPosition('Base');
     setJerseyNumber('');
-    setLicense('Foreign player');
+    setLicense('EXT');
     setPhone('+34600000000');
     setNotes('');
     setIsModalOpen(true);
@@ -51,7 +51,7 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
     setRole(member.role);
     setPosition(member.position || '');
     setJerseyNumber(member.jerseyNumber !== undefined ? String(member.jerseyNumber) : '');
-    setLicense(member.license || 'Foreign player');
+    setLicense(normalizeLicense(member.license));
     setPhone(member.phone);
     setNotes(member.notes || '');
     setIsModalOpen(true);
@@ -95,10 +95,10 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
   const allStaff = members.filter(m => m.role === 'staff' || (m.role as any) === 'medical');
 
   // Count licenses among players
-  const countForeign = allPlayers.filter(p => (p.license || 'Foreign player') === 'Foreign player').length;
-  const countCotonou = allPlayers.filter(p => p.license === 'European - Cotonou').length;
-  const countAcb = allPlayers.filter(p => p.license === 'Home grown (ACB)').length;
-  const countBcl = allPlayers.filter(p => p.license === 'Home grown (BCL)').length;
+  const countJfl = allPlayers.filter(p => normalizeLicense(p.license) === 'JFL').length;
+  const countEur = allPlayers.filter(p => normalizeLicense(p.license) === 'EUR').length;
+  const countExt = allPlayers.filter(p => normalizeLicense(p.license) === 'EXT').length;
+  const countJflBcl = allPlayers.filter(p => normalizeLicense(p.license) === 'JFL BCL').length;
 
   const filteredMembers = members.filter(m => {
     // Tab filter
@@ -108,7 +108,7 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
 
     // License sub-filter (applicable in licenses tab or player tab)
     if ((filterTab === 'licenses' || filterTab === 'player') && filterLicense !== 'all') {
-      const currentLicense = m.license || 'Foreign player';
+      const currentLicense = normalizeLicense(m.license);
       if (currentLicense !== filterLicense) return false;
     }
 
@@ -251,92 +251,92 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
                 </span>
               </button>
 
-              {/* 1. Foreign player: yellow on black */}
+              {/* 1. JFL: red */}
               <button
                 type="button"
-                onClick={() => setFilterLicense('Foreign player')}
+                onClick={() => setFilterLicense('JFL')}
                 className={`p-2 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
-                  filterLicense === 'Foreign player'
-                    ? 'border-amber-400 bg-stone-950 ring-1 ring-amber-400/40 text-white'
-                    : 'border-stone-800 bg-stone-950/60 text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 bg-slate-950 text-amber-300 border border-stone-700">
-                    #
-                  </span>
-                  <span className="text-xs font-bold">Foreign</span>
-                </div>
-                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded bg-slate-900 text-amber-300 border border-amber-400/40">
-                  {countForeign}
-                </span>
-              </button>
-
-              {/* 2. European - Cotonou: yellow on blue */}
-              <button
-                type="button"
-                onClick={() => setFilterLicense('European - Cotonou')}
-                className={`p-2 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
-                  filterLicense === 'European - Cotonou'
-                    ? 'border-blue-400 bg-stone-950 ring-1 ring-blue-400/40 text-white'
-                    : 'border-stone-800 bg-stone-950/60 text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 bg-blue-700 text-amber-300 border border-blue-500">
-                    #
-                  </span>
-                  <span className="text-xs font-bold">Cotonou</span>
-                </div>
-                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded bg-blue-900 text-amber-300 border border-blue-400">
-                  {countCotonou}
-                </span>
-              </button>
-
-              {/* 3. Home grown (ACB): yellow on red */}
-              <button
-                type="button"
-                onClick={() => setFilterLicense('Home grown (ACB)')}
-                className={`p-2 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
-                  filterLicense === 'Home grown (ACB)'
+                  filterLicense === 'JFL'
                     ? 'border-red-400 bg-stone-950 ring-1 ring-red-400/40 text-white'
                     : 'border-stone-800 bg-stone-950/60 text-stone-400 hover:text-stone-200'
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 bg-red-700 text-amber-300 border border-red-500">
+                  <span className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 bg-red-600 text-white border border-red-500">
                     #
                   </span>
-                  <span className="text-xs font-bold">JFL (ACB)</span>
+                  <span className="text-xs font-bold">JFL</span>
                 </div>
-                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded bg-red-900 text-amber-300 border border-red-400">
-                  {countAcb}
+                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded bg-red-950 text-red-200 border border-red-500/50">
+                  {countJfl}
                 </span>
               </button>
 
-              {/* 4. Home grown (BCL): yellow on diagonal red/blue */}
+              {/* 2. EUR (EUR y COT): blue */}
               <button
                 type="button"
-                onClick={() => setFilterLicense('Home grown (BCL)')}
+                onClick={() => setFilterLicense('EUR')}
                 className={`p-2 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
-                  filterLicense === 'Home grown (BCL)'
+                  filterLicense === 'EUR'
+                    ? 'border-blue-400 bg-stone-950 ring-1 ring-blue-400/40 text-white'
+                    : 'border-stone-800 bg-stone-950/60 text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 bg-blue-600 text-white border border-blue-500">
+                    #
+                  </span>
+                  <span className="text-xs font-bold">EUR</span>
+                </div>
+                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded bg-blue-950 text-blue-200 border border-blue-500/50">
+                  {countEur}
+                </span>
+              </button>
+
+              {/* 3. EXT: dark blue */}
+              <button
+                type="button"
+                onClick={() => setFilterLicense('EXT')}
+                className={`p-2 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
+                  filterLicense === 'EXT'
+                    ? 'border-blue-700 bg-stone-950 ring-1 ring-blue-700/40 text-white'
+                    : 'border-stone-800 bg-stone-950/60 text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 bg-blue-950 text-white border border-blue-800">
+                    #
+                  </span>
+                  <span className="text-xs font-bold">EXT</span>
+                </div>
+                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded bg-slate-900 text-slate-200 border border-blue-900">
+                  {countExt}
+                </span>
+              </button>
+
+              {/* 4. JFL BCL: diagonal red/blue */}
+              <button
+                type="button"
+                onClick={() => setFilterLicense('JFL BCL')}
+                className={`p-2 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
+                  filterLicense === 'JFL BCL'
                     ? 'border-amber-400 bg-stone-950 ring-1 ring-amber-400/40 text-white'
                     : 'border-stone-800 bg-stone-950/60 text-stone-400 hover:text-stone-200'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <span 
-                    className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 text-amber-300 border border-amber-400"
-                    style={{ backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #1d4ed8 50%)', textShadow: '0 1px 2px rgba(0,0,0,0.9)' }}
+                    className="w-5 h-5 rounded font-extrabold text-[10px] flex items-center justify-center shrink-0 text-white border border-amber-400"
+                    style={{ backgroundImage: 'linear-gradient(135deg, #dc2626 50%, #2563eb 50%)', textShadow: '0 1px 2px rgba(0,0,0,0.9)' }}
                   >
                     #
                   </span>
-                  <span className="text-xs font-bold">JFL (BCL)</span>
+                  <span className="text-xs font-bold">JFL BCL</span>
                 </div>
-                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded text-amber-300 border border-amber-400"
+                <span className="text-xs font-mono font-extrabold px-2 py-0.5 rounded text-white border border-amber-400/60"
                   style={{ backgroundImage: 'linear-gradient(135deg, #991b1b 50%, #1e40af 50%)' }}
                 >
-                  {countBcl}
+                  {countJflBcl}
                 </span>
               </button>
             </div>
@@ -345,11 +345,11 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-stone-950/80 border border-stone-800 text-[11px] text-stone-400">
               <Info className="w-4 h-4 text-amber-400 shrink-0" />
               <span>
-                Los dorsales en el <strong>PDF Travel Roster</strong> se colorearán automáticamente según esta selección: 
-                <span className="text-stone-200 font-bold ml-1">Amarillo/Negro (Foreign)</span>, 
-                <span className="text-blue-300 font-bold ml-1">Amarillo/Azul (Cotonou)</span>, 
-                <span className="text-red-300 font-bold ml-1">Amarillo/Rojo (ACB)</span> y 
-                <span className="text-amber-300 font-bold ml-1">Amarillo/Diagonal Rojo-Azul (BCL)</span>.
+                Colores asignados en el dorsal: 
+                <span className="text-red-400 font-bold ml-1">Rojo (JFL)</span>, 
+                <span className="text-blue-400 font-bold ml-1">Azul (EUR / COT)</span>, 
+                <span className="text-blue-200 font-bold ml-1">Azul Oscuro (EXT)</span> y 
+                <span className="text-amber-300 font-bold ml-1">Mitad rojo, mitad azul diagonal (JFL BCL - Marcis Steinbergs)</span>.
               </span>
             </div>
           </div>
@@ -427,7 +427,7 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
                     {/* 4 Clickable License Tabs */}
                     <div className="grid grid-cols-2 gap-1.5 pt-0.5">
                       {LICENSE_OPTIONS.map((opt) => {
-                        const isSelected = (member.license || 'Foreign player') === opt.id;
+                        const isSelected = normalizeLicense(member.license) === opt.id;
                         const optVisual = getLicenseVisual(opt.id);
 
                         return (
@@ -585,7 +585,7 @@ export const RosterManager: React.FC<RosterManagerProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {LICENSE_OPTIONS.map((opt) => {
-                      const isSelected = license === opt.id;
+                      const isSelected = normalizeLicense(license) === opt.id;
                       const optVisual = getLicenseVisual(opt.id);
 
                       return (
